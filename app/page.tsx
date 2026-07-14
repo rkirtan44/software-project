@@ -82,8 +82,8 @@ const T = {
 type Lang = "en";
 type PageView = "home" | "scholarships" | "contact" | "studentProfile" | "documents" | "savedScholarships";
 
-const CATEGORY_OPTIONS = ["All Categories","SC","ST","OBC","General","Minority"];
-const CAST_OPTIONS     = ["SC","ST","OBC","General","Minority"];
+const CATEGORY_OPTIONS = ["All Categories","General","OBC","SC","ST","Minority"];
+const CAST_OPTIONS     = ["General","OBC","SC","ST","Minority"];
 const LEVEL_OPTIONS    = ["All Levels","Central","State","Trust"];
 const STATES = ["Any","Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu & Kashmir","Ladakh","Puducherry"];
 
@@ -142,7 +142,7 @@ export default function ScholarshipPage() {
   const [SCHOLARSHIPS, setScholarships] = useState<Scholarship[]>([]);
   const [scholarshipsLoading, setScholarshipsLoading] = useState(true);
   const [activeNav, setActiveNav] = useState<PageView>("home");
-  const [profile, setProfile] = useState<Profile>({ income: "", category: "SC", course: "Any", state: "Any", gender: "Any" });
+  const [profile, setProfile] = useState<Profile>({ income: "", category: "General", course: "Any", state: "Any", gender: "Any" });
   const [savedProfile, setSavedProfile] = useState<Profile | null>(null);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
   const [searchName, setSearchName] = useState("");
@@ -299,7 +299,7 @@ export default function ScholarshipPage() {
               {/* Logo */}
               <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer" onClick={() => setActiveNav("home")}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-lg" style={{ background: "linear-gradient(135deg,#0f2044,#1d4ed8)" }}>🎓</div>
-                <p className="font-display font-bold text-slate-900 text-[17px] leading-none">ScholarHub</p>
+                <p className="font-display font-bold text-slate-900 text-[17px] leading-none">ScholarPath</p>
               </div>
 
               {/* Nav tabs */}
@@ -702,7 +702,7 @@ export default function ScholarshipPage() {
                 </div>
               )}
               <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-3 gap-4 text-center text-xs text-slate-500">
-                {[["📧","Email","support@scholarhub.in"],["📞","Phone","1800-XXX-XXXX"],["⏰","Hours","Mon–Sat 9am–6pm"]].map(([e,l,v]) => (
+                {[["📧","Email","support@ScholarPath.in"],["📞","Phone","1800-XXX-XXXX"],["⏰","Hours","Mon–Sat 9am–6pm"]].map(([e,l,v]) => (
                   <div key={l}><div className="text-2xl mb-2">{e}</div><div className="font-bold text-slate-700 text-sm">{l}</div><div>{v}</div></div>
                 ))}
               </div>
@@ -795,7 +795,7 @@ export default function ScholarshipPage() {
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 <select value={searchCategory} onChange={e => setSearchCategory(e.target.value)} className={sl}>{CATEGORY_OPTIONS.map(c => <option key={c}>{c === "All Categories" ? t.allCategories : c}</option>)}</select>
                 <select value={searchCourse} onChange={e => setSearchCourse(e.target.value)} className={sl}><option value="Any">{t.allCourses}</option><option value="School">{t.school}</option><option value="Engineering">{t.engineering}</option><option value="Medical">{t.medical}</option><option value="Arts">{t.arts}</option><option value="Commerce">{t.commerce}</option><option value="Science">{t.science}</option></select>
-                <select value={searchGender} onChange={e => setSearchGender(e.target.value)} className={sl}><option value="Any">{t.genderField}: {t.genderAny}</option><option value="Male">👨 {t.genderMale}</option><option value="Female">👩 {t.genderFemale}</option></select>
+                <select value={searchGender} onChange={e => setSearchGender(e.target.value)} className={sl}><option value="Any">{t.genderField}: {t.genderAny}</option><option value="Male">{t.genderMale}</option><option value="Female">{t.genderFemale}</option></select>
                 <select value={searchLevel} onChange={e => setSearchLevel(e.target.value)} className={sl}>{LEVEL_OPTIONS.map(l => <option key={l}>{l === "All Levels" ? t.allLevels : l === "State" ? t.stateLvl : l === "Central" ? t.central : t.trust}</option>)}</select>
                 <select value={searchState} onChange={e => setSearchState(e.target.value)} className={sl}><option value="Any">{t.stateField}: {t.anyOpt}</option>{STATES.filter(s => s !== "Any").map(s => <option key={s} value={s}>{s}</option>)}</select>
               </div>
@@ -860,7 +860,7 @@ export default function ScholarshipPage() {
                                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${catBadge(s.category)}`}>{sCategory(s)}</span>
                                   {s.gender !== "Any" && (
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${s.gender === "Female" ? "bg-pink-50 text-pink-700 border border-pink-200" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>
-                                      {s.gender === "Female" ? "👩 "+t.genderFemale : "👨 "+t.genderMale}
+                                      {s.gender === "Female" ? t.genderFemale : t.genderMale}
                                     </span>
                                   )}
                                 </div>

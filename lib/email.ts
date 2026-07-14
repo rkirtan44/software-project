@@ -16,7 +16,7 @@ export const transporter = nodemailer.createTransport({
 });
 
 /** The "from" address used in all outbound emails */
-export const FROM_ADDRESS = `"ScholarHub" <${process.env.EMAIL_USER}>`;
+export const FROM_ADDRESS = `"ScholarPath" <${process.env.EMAIL_USER}>`;
 
 /**
  * Send emails to a list of users in batches of 10.
@@ -46,7 +46,7 @@ export async function sendBatchEmails(
           });
           success++;
         } catch (err) {
-          console.error(`[ScholarHub] Email failed for ${user.email}:`, err);
+          console.error(`[ScholarPath] Email failed for ${user.email}:`, err);
           failed++;
         }
       })

@@ -32,7 +32,7 @@ function buildSimpleNotificationEmail(params: {
       <div style="text-align:center;margin-bottom:24px;">
         <div style="display:inline-block;background:linear-gradient(135deg,#1d4ed8,#4f46e5);border-radius:14px;padding:14px 24px;">
           <span style="color:white;font-size:22px;">🎓</span>
-          <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarHub</span>
+          <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarPath</span>
         </div>
       </div>
       <div style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
@@ -43,10 +43,10 @@ function buildSimpleNotificationEmail(params: {
         <div style="padding:24px;">
           ${recipientName ? `<p style="color:#64748b;font-size:14px;margin:0 0 16px;">Hello <strong>${recipientName}</strong>,</p>` : ""}
           <p style="color:#374151;font-size:15px;line-height:1.7;margin:0 0 20px;">${message}</p>
-          <a href="${appUrl}" style="display:inline-block;background:linear-gradient(135deg,#1d4ed8,#4f46e5);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">Open ScholarHub →</a>
+          <a href="${appUrl}" style="display:inline-block;background:linear-gradient(135deg,#1d4ed8,#4f46e5);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">Open ScholarPath →</a>
         </div>
         <div style="padding:16px 24px;background:#f8fafc;border-top:1px solid #f0f0f0;">
-          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center;">This email was sent by ScholarHub admin.</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center;">This email was sent by ScholarPath admin.</p>
         </div>
       </div>
     </div>`;
@@ -122,12 +122,12 @@ export async function POST(req: NextRequest) {
         if (!users.length) return;
         await sendBatchEmails(
           users,
-          `${title} — ScholarHub`,
+          `${title} — ScholarPath`,
           (name) => buildSimpleNotificationEmail({ title, message, type, recipientName: name })
         );
-        console.log(`[ScholarHub] Notification emails sent to ${users.length} users`);
+        console.log(`[ScholarPath] Notification emails sent to ${users.length} users`);
       })
-      .catch((err) => console.error("[ScholarHub] Notification email error:", err));
+      .catch((err) => console.error("[ScholarPath] Notification email error:", err));
 
     return NextResponse.json({ notification, message: "Notification sent!" }, { status: 201 });
   } catch (err: any) {

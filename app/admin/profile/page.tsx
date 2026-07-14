@@ -8,7 +8,7 @@ export default function AdminProfilePage() {
   // Temporary static admin data
   const [admin] = useState({
     name: "Admin User",
-    email: "admin@scholarhub.com",
+    email: "admin@ScholarPath.com",
     role: "Administrator",
   })
 

@@ -84,7 +84,7 @@ export default function RegisterPage() {
           >
             <GraduationCap className="text-white" size={32} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">ScholarHub</h1>
+          <h1 className="text-3xl font-bold text-gray-900">ScholarPath</h1>
           <p className="text-gray-500 mt-1 text-sm">Scholarship Portal — Gujarat &amp; Central</p>
         </div>
 

@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
             style={{ background: "linear-gradient(135deg,#1d4ed8,#4f46e5)" }}>
             <GraduationCap className="text-white" size={32} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">ScholarHub</h1>
+          <h1 className="text-3xl font-bold text-gray-900">ScholarPath</h1>
           <p className="text-gray-500 mt-1 text-sm">Scholarship Portal — Gujarat & Central</p>
         </div>
 

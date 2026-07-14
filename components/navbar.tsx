@@ -68,7 +68,7 @@ export function Navbar() {
             <GraduationCap className="text-white h-5 w-5" />
           </div>
           <span className="text-xl font-semibold text-gray-800">
-            ScholarHub
+            ScholarPath
           </span>
         </Link>
 

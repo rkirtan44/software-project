@@ -25,14 +25,14 @@ export async function POST(req: NextRequest) {
 
     // Send reply email
     await transporter.sendMail({
-      from: `"ScholarHub Admin" <${process.env.EMAIL_USER}>`,
+      from: `"ScholarPath Admin" <${process.env.EMAIL_USER}>`,
       to,
-      subject: "Re: Your query on ScholarHub",
+      subject: "Re: Your query on ScholarPath",
       html: `
         <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:28px;background:#f8fafc;border-radius:16px;">
           <div style="background:linear-gradient(135deg,#1d4ed8,#4f46e5);border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:20px;">
             <span style="color:white;font-size:22px;">🎓</span>
-            <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarHub</span>
+            <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarPath</span>
           </div>
           <div style="background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
             <p style="color:#64748b;font-size:14px;margin:0 0 16px;">Hello <strong>${name || "there"}</strong>,</p>
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
               <p style="margin:0;font-size:13px;color:#64748b;">${originalMessage}</p>
             </div>` : ""}
             <div style="margin-top:24px;padding-top:16px;border-top:1px solid #f0f0f0;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#94a3b8;">ScholarHub — Scholarship Portal · Gujarat & Central</p>
+              <p style="margin:0;font-size:12px;color:#94a3b8;">ScholarPath — Scholarship Portal · Gujarat & Central</p>
             </div>
           </div>
         </div>

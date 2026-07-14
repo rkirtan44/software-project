@@ -2,7 +2,7 @@ export type Language = "en"
 
 export const translations: Record<Language, Record<string, string>> = {
   en: {
-    siteName: "ScholarHub", home: "Home", studentDashboard: "Student Dashboard",
+    siteName: "ScholarPath", home: "Home", studentDashboard: "Student Dashboard",
     adminDashboard: "Admin Dashboard", switchLanguage: "Language",
     langSelectTitle: "Choose Your Language", langSelectSubtitle: "Select a language to continue to the Scholarship Portal",
     langEnglish: "English", langContinue: "Continue",
@@ -38,7 +38,7 @@ export const translations: Record<Language, Record<string, string>> = {
     statusApproved: "Approved", statusRejected: "Rejected",
     catEngineering: "Engineering", catMedical: "Medical", catArts: "Arts",
     catScience: "Science", catCommerce: "Commerce", catGeneral: "General",
-    footerText: "ScholarHub - Empowering Students Through Education", allRightsReserved: "All rights reserved.",
+    footerText: "ScholarPath - Empowering Students Through Education", allRightsReserved: "All rights reserved.",
     contactDescription: "We'd love to hear from you. Fill out the form below and we'll get back to you soon.",
     name: "Name", enterName: "Enter your name", email: "Email", enterEmail: "Enter your email",
     message: "Message", enterMessage: "Write your message here...", sendMessage: "Send Message",

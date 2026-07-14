@@ -38,17 +38,17 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: FROM_ADDRESS,
       to: email,
-      subject: "Reset Your ScholarHub Password",
+      subject: "Reset Your ScholarPath Password",
       html: `
         <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:28px;background:#f8fafc;border-radius:16px;">
           <div style="background:linear-gradient(135deg,#1d4ed8,#4f46e5);border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:20px;">
             <span style="color:white;font-size:22px;">🎓</span>
-            <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarHub</span>
+            <span style="color:white;font-weight:800;font-size:18px;margin-left:8px;">ScholarPath</span>
           </div>
           <div style="background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
             <h2 style="color:#1a1a2e;margin:0 0 8px;font-size:22px;">Reset Your Password</h2>
             <p style="color:#64748b;font-size:14px;margin:0 0 24px;">
-              Hello <strong>${user.name || "there"}</strong>, we received a request to reset your ScholarHub password.
+              Hello <strong>${user.name || "there"}</strong>, we received a request to reset your ScholarPath password.
             </p>
             <div style="text-align:center;margin-bottom:24px;">
               <a href="${resetUrl}"
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
               </p>
             </div>
             <p style="color:#94a3b8;font-size:12px;text-align:center;margin:0;">
-              ScholarHub — Scholarship Portal · Gujarat & Central
+              ScholarPath — Scholarship Portal · Gujarat & Central
             </p>
           </div>
         </div>

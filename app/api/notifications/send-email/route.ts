@@ -69,7 +69,7 @@ function buildNotificationEmail(params: {
 <div style="max-width:560px;margin:32px auto;padding:0 16px 32px;">
   <div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px 16px 0 0;padding:24px 28px;text-align:center;">
     <span style="font-size:28px;">🎓</span>
-    <h1 style="margin:0;color:white;font-size:22px;font-weight:800;">ScholarHub</h1>
+    <h1 style="margin:0;color:white;font-size:22px;font-weight:800;">ScholarPath</h1>
     <p style="margin:4px 0 0;color:rgba(255,255,255,0.75);font-size:13px;">Scholarship Portal Notification</p>
   </div>
   <div style="background:white;padding:28px;border-radius:0 0 16px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
@@ -84,11 +84,11 @@ function buildNotificationEmail(params: {
     </div>
     ${scholarshipSection}
     <p style="margin:20px 0 0;font-size:12px;color:#94a3b8;text-align:center;line-height:1.6;">
-      This email was sent by ScholarHub Admin.<br>
+      This email was sent by ScholarPath Admin.<br>
       Any questions? <a href="mailto:${process.env.EMAIL_USER}" style="color:#667eea;text-decoration:none;">contact us</a>.
     </p>
   </div>
-  <p style="text-align:center;margin:16px 0 0;font-size:11px;color:#94a3b8;">© ${new Date().getFullYear()} ScholarHub · All rights reserved</p>
+  <p style="text-align:center;margin:16px 0 0;font-size:11px;color:#94a3b8;">© ${new Date().getFullYear()} ScholarPath · All rights reserved</p>
 </div>
 </body></html>`;
 }
@@ -189,7 +189,7 @@ export async function POST(req: NextRequest) {
 
     const { success, failed } = await sendBatchEmails(
       targetUsers,
-      `${notification.title} — ScholarHub`,
+      `${notification.title} — ScholarPath`,
       (name) => buildNotificationEmail({
         notifTitle:   notification.title,
         notifMessage: notification.message,

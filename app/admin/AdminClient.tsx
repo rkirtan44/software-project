@@ -381,7 +381,7 @@ export default function AdminClient() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)" }}>🎓</div>
               <div>
-                <p className="font-display text-white font-bold text-lg leading-none">ScholarHub</p>
+                <p className="font-display text-white font-bold text-lg leading-none">ScholarPath</p>
                 <p className="text-yellow-200 text-[10px] font-semibold tracking-widest uppercase mt-0.5">Admin Panel</p>
               </div>
             </div>
@@ -431,7 +431,7 @@ export default function AdminClient() {
           {/* ── MAIN TABS ── */}
           <div className="flex gap-2 mb-6 bg-white rounded-2xl p-1.5 border border-slate-200" style={{ boxShadow: "0 1px 6px rgba(15,32,68,0.06)" }}>
             {[
-              { key: "scholarships",  label: "India Scholarships", icon: "🎓", count: scholarships.length },
+              { key: "scholarships",  label: "Scholarships",       icon: "🎓", count: scholarships.length },
               { key: "monitor",       label: "Monitor",             icon: "🔍", count: monitorLogs.length },
               { key: "notifications", label: "Notifications",       icon: "🔔", count: notifications.length },
               { key: "contacts",      label: "Queries",             icon: "💬", count: contacts.filter(c => !c.isRead).length },
@@ -807,6 +807,19 @@ export default function AdminClient() {
                     All Notifications
                     <span className="ml-2 text-sm font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full">{notifications.length}</span>
                   </h3>
+                  {notifications.length > 0 && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm("Delete all notifications?")) return;
+                        await Promise.all(notifications.map(n =>
+                          fetch(`/api/notifications/${n._id}`, { method: "DELETE" })
+                        ));
+                        setNotifications([]);
+                      }}
+                      className="text-xs text-white/80 font-semibold hover:text-white border border-white/30 px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">
+                      🗑 Clear All
+                    </button>
+                  )}
                 </div>
                 <div className="p-5">
                   {notifications.length === 0 ? (
@@ -934,13 +947,7 @@ export default function AdminClient() {
                       className="flex-1 min-w-[180px] border border-slate-200 rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-400 bg-slate-50"
                     />
                     <div className="flex gap-2 flex-wrap">
-                      {(["all", "urgent", "high", "medium", "low"] as const).map(s => (
-                        <button key={s} onClick={() => setMonitorSeverityFilter(s)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${monitorSeverityFilter === s ? "text-white border-transparent" : "text-slate-500 border-slate-200 bg-white"}`}
-                          style={monitorSeverityFilter === s ? { background: s === "urgent" ? "#dc2626" : s === "high" ? "#d97706" : s === "medium" ? "#2563eb" : s === "low" ? "#059669" : "#7c3aed" } : {}}>
-                          {s === "all" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
-                        </button>
-                      ))}
+                      {/* severity filter removed */}
                     </div>
                   </div>
 
@@ -1054,7 +1061,20 @@ export default function AdminClient() {
                 <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden" style={{ boxShadow: "0 2px 16px rgba(15,32,68,0.06)" }}>
                   <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                     <h3 className="font-bold text-slate-800 text-base">Full History Log</h3>
-                    <button onClick={loadMonitorHistory} className="text-xs text-violet-600 font-semibold hover:underline">↻ Refresh</button>
+                    <div className="flex items-center gap-3">
+                      <button onClick={loadMonitorHistory} className="text-xs text-violet-600 font-semibold hover:underline">↻ Refresh</button>
+                      {monitorHistory.length > 0 && (
+                        <button
+                          onClick={async () => {
+                            if (!confirm("Delete all history logs?")) return;
+                            await fetch("/api/admin/cleanup-monitor");
+                            setMonitorHistory([]);
+                          }}
+                          className="text-xs text-red-500 font-semibold hover:underline">
+                          🗑 Clear All
+                        </button>
+                      )}
+                    </div>
                   </div>
                   {monitorHistory.length === 0 ? (
                     <div className="p-16 text-center">

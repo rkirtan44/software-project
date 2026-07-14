@@ -27,7 +27,7 @@ export type VaultDocument = {
 
 type VaultDocumentRow = VaultDocument & { data: ArrayBuffer }
 
-const DB_NAME = "scholarhub_vault"
+const DB_NAME = "scholarpath_vault"
 const DB_VERSION = 1
 const STORE = "documents"
 

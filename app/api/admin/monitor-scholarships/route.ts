@@ -40,7 +40,7 @@ async function safeFetch(url: string): Promise<string | null> {
       signal: controller.signal,
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; ScholarHubMonitor/1.0; +https://scholarhub.in)",
+          "Mozilla/5.0 (compatible; ScholarPathMonitor/1.0; +https://ScholarPath.in)",
         Accept: "text/html,application/xhtml+xml",
       },
     });
