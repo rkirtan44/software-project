@@ -239,17 +239,20 @@ export async function GET() {
   try {
     await connectDB();
 
-    // Active alerts = only "changed" status, unresolved
+    // Active alerts = "changed" or "unreachable" status, unresolved
     const logs = await ScholarshipMonitorLog.find({
       resolved: false,
-      status: "changed",
+      status: { $in: ["changed", "unreachable"] },
     })
       .sort({ checkedAt: -1 })
       .lean();
 
-    // Sort by severity weight — urgent first
+    // Sort: changed first, then unreachable; within each group by severity
     const weight: Record<string, number> = { urgent: 0, high: 1, medium: 2, low: 3 };
-    logs.sort((a, b) => (weight[a.severity] ?? 4) - (weight[b.severity] ?? 4));
+    logs.sort((a, b) => {
+      if (a.status !== b.status) return a.status === "changed" ? -1 : 1;
+      return (weight[a.severity] ?? 4) - (weight[b.severity] ?? 4);
+    });
 
     return NextResponse.json({ logs, total: logs.length });
   } catch (err: any) {
@@ -307,20 +310,19 @@ export async function POST(req: NextRequest) {
       const html = await safeFetch(url);
 
       if (!html) {
-        // Log as unreachable — auto-resolved so it goes straight to history
+        // Log as unreachable — keep unresolved so admin can see it in Active Alerts
         await ScholarshipMonitorLog.create({
           scholarshipId: scholarship._id,
           scholarshipTitle: scholarship.title,
           sourceUrl: url,
           status: "unreachable" as MonitorStatus,
           changes: [],
-          severity: "low" as AlertSeverity,
-          resolved: true,
-          resolvedAt: new Date(),
+          severity: "high" as AlertSeverity,
+          resolved: false,
           checkedAt: new Date(),
           errorMessage: `Source URL unreachable: ${url}`,
         });
-        return { title: scholarship.title, status: "unreachable" as MonitorStatus, changes: 0, isAlert: false, isWarning: true };
+        return { title: scholarship.title, status: "unreachable" as MonitorStatus, changes: 0, isAlert: true, isWarning: false };
       }
 
       const text = stripHtml(html);
