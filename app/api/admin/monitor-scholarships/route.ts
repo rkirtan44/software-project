@@ -15,8 +15,8 @@
  * Returns all unresolved monitor alerts with their change details.
  */
 
-// Vercel max function duration (seconds) — 60 on Pro, 10 on Hobby
-export const maxDuration = 60;
+// Vercel Hobby plan limit is 10 seconds — keep within that
+export const maxDuration = 10;
 
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
@@ -31,16 +31,15 @@ import { auth } from "@/lib/auth";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-/** Fetch a URL with a 6-second timeout. Returns null on failure. */
+/** Fetch a URL with a 2-second timeout. Returns null on failure. */
 async function safeFetch(url: string): Promise<string | null> {
   try {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6_000);
+    const timer = setTimeout(() => controller.abort(), 2_000);
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (compatible; ScholarPathMonitor/1.0; +https://ScholarPath.in)",
+        "User-Agent": "Mozilla/5.0 (compatible; ScholarPathMonitor/1.0)",
         Accept: "text/html,application/xhtml+xml",
       },
     });
@@ -271,17 +270,24 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
 
-    // Fetch all scholarships that have an applyLink
-    const scholarships = await Scholarship.find({
+    // Scan only 5 scholarships per call to stay within Vercel's 10s limit.
+    // Pass ?offset=5, ?offset=10 etc. to scan the next batch.
+    const { searchParams } = new URL(req.url);
+    const offset = parseInt(searchParams.get("offset") || "0", 10);
+    const SCAN_LIMIT = 5;
+
+    // Fetch scholarships that have an applyLink
+    const allScholarships = await Scholarship.find({
       applyLink: { $exists: true, $ne: "" },
     }).lean();
 
+    const scholarships = allScholarships.slice(offset, offset + SCAN_LIMIT);
+    const totalCount = allScholarships.length;
+
     if (scholarships.length === 0) {
       return NextResponse.json({
-        message: "No scholarships with source URLs found.",
-        scanned: 0,
-        alerts: 0,
-        warnings: 0,
+        message: "No scholarships to scan in this batch.",
+        scanned: 0, alerts: 0, warnings: 0, total: totalCount, offset,
       });
     }
 
@@ -289,7 +295,7 @@ export async function POST(req: NextRequest) {
     let warningCount = 0;
     const results: Array<{ title: string; status: MonitorStatus; changes: number }> = [];
 
-    // Process in parallel batches of 5 for speed
+    // Process all 5 in parallel
     const BATCH_SIZE = 5;
     for (let i = 0; i < scholarships.length; i += BATCH_SIZE) {
       const batch = scholarships.slice(i, i + BATCH_SIZE);
@@ -483,8 +489,11 @@ export async function POST(req: NextRequest) {
     } // end batch loop
 
     return NextResponse.json({
-      message: `Scan complete. ${alertCount} alert(s) generated, ${warningCount} warning(s).`,
+      message: `Scan complete. ${alertCount} alert(s), ${warningCount} warning(s). (Batch ${offset}–${offset + scholarships.length} of ${totalCount})`,
       scanned: scholarships.length,
+      total: totalCount,
+      offset,
+      nextOffset: offset + SCAN_LIMIT < totalCount ? offset + SCAN_LIMIT : null,
       alerts: alertCount,
       warnings: warningCount,
       results,

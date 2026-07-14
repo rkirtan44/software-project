@@ -170,10 +170,31 @@ export default function AdminClient() {
   async function handleRunScan() {
     setMonitorScanning(true); setMonitorError(""); setMonitorResult(null);
     try {
-      const res = await fetch("/api/admin/monitor-scholarships", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) { setMonitorError(data.error || "Scan failed"); }
-      else { setMonitorResult(data); loadMonitorAlerts(); loadMonitorHistory(); }
+      // Scan in batches of 5 to stay within Vercel's 10s function limit
+      let offset = 0;
+      let totalScanned = 0, totalAlerts = 0, totalWarnings = 0;
+
+      while (true) {
+        const res = await fetch(`/api/admin/monitor-scholarships?offset=${offset}`, { method: "POST" });
+        const data = await res.json();
+        if (!res.ok) { setMonitorError(data.error || "Scan failed"); break; }
+
+        totalScanned += data.scanned || 0;
+        totalAlerts  += data.alerts  || 0;
+        totalWarnings += data.warnings || 0;
+
+        if (!data.nextOffset) break; // all batches done
+        offset = data.nextOffset;
+      }
+
+      setMonitorResult({
+        scanned: totalScanned,
+        alerts: totalAlerts,
+        warnings: totalWarnings,
+        message: `Scan complete. ${totalAlerts} alert(s), ${totalWarnings} warning(s).`,
+      });
+      loadMonitorAlerts();
+      loadMonitorHistory();
     } catch { setMonitorError("Network error during scan"); }
     setMonitorScanning(false);
   }
