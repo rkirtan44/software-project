@@ -10,8 +10,8 @@ export default function StudentProfile() {
   const { t } = useLanguage()
 
   const student = {
-    name: "Rahul Patel",
-    email: "rahulpatel@email.com",
+    name: "kirtan",
+    email: "rkirtan44@email.com",
     phone: "+91 9876543210",
     address: "Ahmedabad, Gujarat",
     dob: "15 Aug 2003",
@@ -21,9 +21,9 @@ export default function StudentProfile() {
     tenth: "88%",
     twelfth: "91%",
     course: "B.Tech Computer Engineering",
-    university: "Gujarat Technological University",
-    year: "3rd Year",
-    enrollment: "GTU2023CE001",
+    university: "DAU",
+    year: "4rd Year",
+    enrollment: "202203042",
   }
 
   return (
