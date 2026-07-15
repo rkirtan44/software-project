@@ -262,6 +262,23 @@ export default function ScholarshipPage() {
   }
 
   function handleSaveProfile() {
+    // All fields mandatory before recommending
+    if (!profile.income || profile.income === "") {
+      alert("Please enter your Annual Family Income to get recommendations.");
+      return;
+    }
+    if (!profile.category || profile.category === "") {
+      alert("Please select your Category.");
+      return;
+    }
+    if (!profile.state || profile.state === "Any") {
+      alert("Please select your State.");
+      return;
+    }
+    if (!profile.course || profile.course === "Any") {
+      alert("Please select your Level of Study.");
+      return;
+    }
     setSavedProfile({ ...profile });
     setProfileSavedToast(true);
     setTimeout(() => setProfileSavedToast(false), 2500);
